@@ -66,6 +66,9 @@ static void operatorCount() {
             preNum *= curNum;
             break;
         case '/':
+            if (curNum == 0.0) {
+                math_error = true;
+            }
             preNum /= curNum;
             break;
         case 's':
