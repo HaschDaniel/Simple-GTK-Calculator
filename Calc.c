@@ -48,7 +48,7 @@ static void clear() {
     curNum = 0.0;
     operator = '\0';
     strcpy(number, "");
-    count = 1;
+    count = 0;
     is_decimal = false;
     math_error = false;
     gtk_label_set_text(GTK_LABEL(label), "0");
@@ -101,7 +101,7 @@ static void clicked(GtkButton *button, gpointer data) {
         clear();
     }
     else if (isdigit(str[0])) {
-        if (count < 32) {
+        if (count < 16) {
             strcat(number, str);
             count ++;
         }
@@ -119,17 +119,16 @@ static void clicked(GtkButton *button, gpointer data) {
         calculate(str);
         if (math_error) {
             gtk_label_set_text(GTK_LABEL(label), "MATH ERROR");
-        } else {
-            gcvt(preNum, 32, number);
+        }
+        else {
+            gcvt(preNum, 12, number);
             gtk_label_set_text(GTK_LABEL(label), number);
             strcpy(number, "");
         }
-
         is_decimal = false;
-        count = 1;
+        count = 0;
     }
 }
-
 
 GtkWidget *CreateButton(GtkWidget *grid, int index, char* label, int x, int y) {
     GtkWidget *button = gtk_button_new_with_label(label);
