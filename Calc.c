@@ -3,13 +3,13 @@
 #include <stdbool.h>
 #include <math.h>
 
-#define WINWIDTH 300
-#define WINHEIGHT 400
+#define WIDTH 300
+#define HEIGHT 400
 
 GtkWidget *label;
 
 double preNum = 0.0;
-double curNum = 0.0;
+double currNum = 0.0;
 char operator;
 char number[32] = {0};
 int count = 1;
@@ -18,7 +18,7 @@ bool math_error = false;
 
 typedef struct {
     GtkWidget *button;
-    gchar* label;
+    gchar *label;
 } buttons;
 
 buttons button_list[] = {
@@ -45,7 +45,7 @@ buttons button_list[] = {
 
 static void clear() {
     preNum = 0.0;
-    curNum = 0.0;
+    currNum = 0.0;
     operator = '\0';
     strcpy(number, "");
     count = 0;
@@ -57,19 +57,19 @@ static void clear() {
 static void operatorCount() {
     switch (operator) {
         case '+':
-            preNum += curNum;
+            preNum += currNum;
             break;
         case '-':
-            preNum -= curNum;
+            preNum -= currNum;
             break;
         case '*':
-            preNum *= curNum;
+            preNum *= currNum;
             break;
         case '/':
-            if (curNum == 0.0) {
+            if (currNum == 0.0) {
                 math_error = true;
             }
-            preNum /= curNum;
+            preNum /= currNum;
             break;
         case 's':
             if (preNum < 0) {
@@ -84,17 +84,17 @@ static void operatorCount() {
         case '=':
             break;
         default:
-            preNum = curNum;
+            preNum = currNum;
     }
 }
 
-static void calculate(const gchar* str) {
-    curNum = atof(number);
+static void calculate(const gchar *str) {
+    currNum = atof(number);
     operatorCount();
     operator = str[0];
 }
 
-static void clicked(GtkButton *button, gpointer data) {
+static void clicked(GtkButton *button) {
     const gchar *str = gtk_button_get_label(button);
 
     if (strcmp (str, "C") == 0) {
@@ -130,7 +130,7 @@ static void clicked(GtkButton *button, gpointer data) {
     }
 }
 
-GtkWidget *CreateButton(GtkWidget *grid, int index, char* label, int x, int y) {
+GtkWidget *CreateButton(GtkWidget *grid, int index, char *label, int x, int y) {
     GtkWidget *button = gtk_button_new_with_label(label);
     g_signal_connect(button, "clicked", G_CALLBACK(clicked), label);
     gtk_grid_attach(GTK_GRID(grid), button, x, y, 1, 1);
@@ -138,15 +138,12 @@ GtkWidget *CreateButton(GtkWidget *grid, int index, char* label, int x, int y) {
 }
 
 static void activate(GtkApplication *app, gpointer user_data) {
-    GtkWidget *window;
-    GtkWidget *grid;
-
-    window = gtk_application_window_new(app);
+    GtkWidget *window = gtk_application_window_new(app);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_window_set_title(GTK_WINDOW(window), "Calculator");
-    gtk_window_set_default_size(GTK_WINDOW(window), WINWIDTH, WINHEIGHT);
+    gtk_window_set_default_size(GTK_WINDOW(window), WIDTH, HEIGHT);
 
-    grid = gtk_grid_new();
+    GtkWidget *grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(window), grid);
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE);
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
@@ -164,12 +161,9 @@ static void activate(GtkApplication *app, gpointer user_data) {
 }
 
 int main(int argc, char **argv) {
-    GtkApplication *app;
-    int status;
-
-    app = gtk_application_new("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
+    GtkApplication *app = gtk_application_new("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
     g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
-    status = g_application_run(G_APPLICATION(app), argc, argv);
+    int status = g_application_run(G_APPLICATION(app), argc, argv);
     g_object_unref(app);
 
     return (status);

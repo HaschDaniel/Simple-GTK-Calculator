@@ -11,4 +11,5 @@ add_definitions(${GTK3_CFLAGS_OTHER})
 add_executable(Calculator
             Calc.c
 )
+
 target_link_libraries(Calculator PRIVATE ${GTK3_LIBRARIES} m)
