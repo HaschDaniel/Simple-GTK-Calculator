@@ -5,8 +5,7 @@ The **Calculator** is simple GUI calculator built with GTK+ in C. It uses basic 
 ## How it works
 
 1. **Operations:** Performs addition, subtraction, multiplication, division, square root and square,
-3. **Error Handling:** Displays MATH ERROR for invalid operations,
-4. **GUI:** Built with GTK+, the application provides buttons for operations and displays results.
+3. **Error Handling:** Displays MATH ERROR for invalid operations.
 
 ## Download
 
